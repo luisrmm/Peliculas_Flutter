@@ -1,6 +1,5 @@
-import 'package:app_peliculas/screens/client.form.dart';
-import 'package:app_peliculas/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:app_peliculas/routes/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,11 +9,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'CineMark',
-      initialRoute: "/",
-      routes: {
-        "/": (_) => Login(),
-        "form":(context) =>  ClientForm(),
-      },
+      initialRoute: '/',
+      routes: getRoutes(),
     );
   }
 }

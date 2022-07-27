@@ -4,9 +4,9 @@ import '../constants/app_colors.dart';
 
 class InputDecorations {
   static InputDecoration inputDecoration(
-      {required String hintText,
-      required String labelText,
-      required Icon icon}) {
+      { String hintText,
+       String labelText,
+       Icon icon}) {
     return InputDecoration(
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.secondaryColor),
