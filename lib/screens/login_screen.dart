@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:app_peliculas/constants/app_colors.dart';
 import 'package:app_peliculas/models/login.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import '../widgets/Input_decoration.dart';
 import 'package:app_peliculas/services/login_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_peliculas/models/api_response.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -141,9 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 50),
           InkWell(
-             child: Text("¿Aún no tienes una cuenta? Regístrate",
-             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              onTap: _launchURL,
+            child: Text("¿Aún no tienes una cuenta? Regístrate",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            onTap: _launchURL,
           )
         ],
       ),
@@ -185,15 +183,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       form.save();
       final response = await LoginService.authLogin(username, password);
-      //response?.Data == null
       if (response == null) {
-        Fluttertoast.showToast(
-            msg: "Usuario y/o contraseña incorrectos.", // message
-            toastLength: Toast.LENGTH_SHORT, // length
-            gravity: ToastGravity.CENTER, // location
-            timeInSecForIosWeb: 1); // duration
       } else {
         _saveAndRedirectToHome(response.userName);
+        LoginService.errorLoginByUser.removeWhere((element) => element.toString().contains(username));
       }
     }
   }
@@ -201,16 +194,17 @@ class _LoginScreenState extends State<LoginScreen> {
   void _saveAndRedirectToHome(String userName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("userName", userName);
-    Navigator.pushNamedAndRemoveUntil(context, 'home', ModalRoute.withName('home'));
+    Navigator.pushNamedAndRemoveUntil(
+        context, 'home', ModalRoute.withName('home'));
   }
 
   _launchURL() async {
-  const urlSingIn = 'https://cinemark-f9c14.web.app/sign-in';
-  var url = Uri.parse(urlSingIn);
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
+    const urlSingIn = 'https://cinemark-f9c14.web.app/sign-in';
+    var url = Uri.parse(urlSingIn);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 }
