@@ -10,6 +10,12 @@ List<Movies> moviesFromJson(String str) =>
 String moviesToJson(List<Movies> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<Comment> comments2FromJson(String str) =>
+    List<Comment>.from(json.decode(str).map((x) => Comment.fromJson(x)));
+
+String comments2ToJson(List<Comment> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Movies {
     Movies({
         this.idMovie,
@@ -39,11 +45,11 @@ class Movies {
         poster: json["poster"],
         review: json["review"],
         //comment: List<Comment>.from(json["comment"].map((x) => Comment.fromJson(x))),
-        comment: json["comment"] != null ? new List<Comment>.from( json["comment"].map((x) => Comment.fromJson(x))) : List<Comment>(),
-        //involved: List<Involved>.from(json["involved"].map((x) => Involved.fromJson(x))),
-        involved: json["involved"] != null ? new List<Involved>.from( json["involved"].map((x) => Involved.fromJson(x))) : List<Involved>(),
-        //qualifiaction: List<Qualifiaction>.from(json["qualifiaction"].map((x) => Qualifiaction.fromJson(x))),
-        qualifiaction: json["qualifiaction"] != null ? new List<Qualifiaction>.from( json["qualifiaction"].map((x) => Qualifiaction.fromJson(x))) : List<Qualifiaction>(),
+         comment: List<Comment>.from(json["comment"].map((x) => Comment.fromJson(x))),
+        involved: List<Involved>.from(json["involved"].map((x) => Involved.fromJson(x))),
+        //involved: json["involved"] != null ? new List<Involved>.from( json["involved"].map((x) => Involved.fromJson(x))) : List<Involved>(),
+        qualifiaction: List<Qualifiaction>.from(json["qualifiaction"].map((x) => Qualifiaction.fromJson(x))),
+        //qualifiaction: json["qualifiaction"] != null ? new List<Qualifiaction>.from( json["qualifiaction"].map((x) => Qualifiaction.fromJson(x))) : List<Qualifiaction>(),
     );
 
     Map<String, dynamic> toJson() => {

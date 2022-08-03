@@ -1,5 +1,4 @@
 import 'package:app_peliculas/constants/app_colors.dart';
-import 'package:app_peliculas/models/login.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/Input_decoration.dart';
@@ -13,12 +12,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  Login _apiResponse = new Login();
   final _formLogin = GlobalKey<FormState>();
 
   String username;
 
   String password;
+  bool _btnActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +89,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                             return null;
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              _btnActive = value.length >= 4 ? true : false;
+                            });
+                          },
                         ),
                         SizedBox(height: 30),
                         TextFormField(
@@ -110,6 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? null
                                 : 'La contraseña debe contener: A, a, 1, @';
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              _btnActive = value.length >= 4 ? true : false;
+                            });
+                          },
                         ),
                         SizedBox(height: 30),
                         MaterialButton(
@@ -126,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onPressed: () {
-                            _handleSubmitted();
+                            _btnActive == true ? _handleSubmitted() : null;
                             //Navigator.pushReplacementNamed(context, 'home');
                           },
                         )
@@ -186,7 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response == null) {
       } else {
         _saveAndRedirectToHome(response.userName);
-        LoginService.errorLoginByUser.removeWhere((element) => element.toString().contains(username));
+        LoginService.errorLoginByUser
+            .removeWhere((element) => element.toString().contains(username));
       }
     }
   }

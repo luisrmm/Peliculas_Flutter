@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/models/movies.dart';
+import '../constants/app_colors.dart';
 
 class DetailsMoviesScreen extends StatelessWidget {
   const DetailsMoviesScreen({Key key}) : super(key: key);
@@ -15,7 +16,7 @@ class DetailsMoviesScreen extends StatelessWidget {
               delegate: SliverChildListDelegate([
             const SizedBox(height: 10.0),
             _posterTitulo(context, movie),
-            _descripcion(movie)
+            _descripcion(movie, context),
           ])),
         ],
       ),
@@ -25,7 +26,7 @@ class DetailsMoviesScreen extends StatelessWidget {
   Widget _crearAppBar(Movies movie) {
     return SliverAppBar(
       elevation: 2.0,
-      backgroundColor: Colors.indigoAccent,
+      backgroundColor: AppColors.primaryColor,
       expandedHeight: 200.0,
       floating: false,
       pinned: true,
@@ -33,7 +34,7 @@ class DetailsMoviesScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(
           movie.name,
-          style: const TextStyle(color: Colors.white, fontSize: 16.0),
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
         ),
         background: FadeInImage(
           image: NetworkImage(movie.poster),
@@ -75,7 +76,10 @@ class DetailsMoviesScreen extends StatelessWidget {
                 children: <Widget>[
                   const Icon(Icons.star_border_outlined),
                   Text(
-                    movies.qualifiaction.map((e) => e.qualification).toString(),
+                    movies.qualifiaction
+                        .map((e) => e.qualification)
+                        .elementAt(0)
+                        .toString(),
                     style: Theme.of(context).textTheme.subtitle2,
                   )
                 ],
@@ -94,25 +98,50 @@ class DetailsMoviesScreen extends StatelessWidget {
     );
   }
 
-  Widget _descripcion(Movies movie) {
+  Widget _descripcion(Movies movie, BuildContext context) {
+    var items = movie.involved;
+    var workers = '';
+    for (var element in items) {
+      var nameRol = element.idRolNavigation.name;
+      var nameWorker = element.idWorkerNavigation.name;
+
+      //workers.add(nameRol + ': ' + nameWorker);
+      workers = workers + nameRol + ': ' + nameWorker + '\n';
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-      child: Text(
-        movie.review,
-        textAlign: TextAlign.center,
+      child: Column(
+        children: [
+          Text(
+            movie.review,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18.0),
+          ),
+          SizedBox(height: 30),
+          Text(
+            workers,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18.0),
+          ),
+          SizedBox(height: 30),
+          MaterialButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            disabledColor: Colors.grey,
+            color: AppColors.secondaryColor,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              child: Text(
+                'Comentarios',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, 'comment', arguments: movie.comment);
+            },
+          )
+        ],
       ),
     );
   }
-
-  /* Widget _crearCasting(Movies movies){
-    return FutureBuilder(
-      future: movies.involved,
-      builder: (context, AsyncSnapshot snapshot){
-        return _createActoresPageView(snapshot.data);
-      });
-  }
-
-  Widget _createActoresPageView(List<Involved> involved){
-    return const SizedBox();
-  } */
 }

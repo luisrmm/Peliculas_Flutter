@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class LoginService {
   static var errorLoginByUser = [];
   static var index;
-  static var count;
+  static var count = 0;
   static final urlLogin = 'https://apimovie.somee.com/api/Users/Login';
   static final urlLoginDesactived =
       'https://apimovie.somee.com/api/Users/Desactived';
@@ -49,7 +49,7 @@ class LoginService {
         };
         var body = jsonEncode(data);
         var urlDesactivaded = Uri.parse(urlLoginDesactived);
-        final response = await http.put(urlDesactivaded,
+        await http.put(urlDesactivaded,
             headers: {"Content-Type": "application/json"}, body: body);
       }
       return null;
