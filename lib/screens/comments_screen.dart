@@ -31,7 +31,7 @@ class _CommentSrceen extends State<CommentSrceen> {
     final border = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
     );
-    
+
     if (fromContext == true) {
       setState(() {
         _comments = ModalRoute.of(context).settings.arguments;
@@ -113,19 +113,33 @@ class _CommentSrceen extends State<CommentSrceen> {
                             height: 10,
                           ),
                           MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              disabledColor: Colors.grey,
-                              color: AppColors.secondaryColor,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 15),
-                                child: Text(
-                                  'Comentar',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            disabledColor: Colors.grey,
+                            color: AppColors.secondaryColor,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              child: Text(
+                                'Comentar',
+                                style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: _handleSubmitted)
+                            ),
+                            onPressed: () {
+                              if (textarea.text.isEmpty) {
+                                Fluttertoast.showToast(
+                                  msg:
+                                      "Error, debe realizar un comentario", // message
+                                  toastLength: Toast.LENGTH_LONG, // length
+                                  gravity: ToastGravity.CENTER, // location
+                                  timeInSecForIosWeb: 4,
+                                  backgroundColor: Colors.red, // duration
+                                );
+                              } else {
+                                _handleSubmitted();
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
