@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onPressed: () {
-                            _btnActive == true ? _handleSubmitted() : null;
+                            _handleSubmitted();
                             //Navigator.pushReplacementNamed(context, 'home');
                           },
                         )

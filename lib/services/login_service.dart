@@ -32,7 +32,8 @@ class LoginService {
           'Su usuario se encuentra inactivo, por favor comuníquese con el administrador.') {
         _errorMessage(response.body);
       }
-      if (response.body == 'Contraseña incorrectos.') {
+      if (response.body == 'Contraseña incorrecta.') {
+        _errorMessage(response.body);
         if (errorLoginByUser.isEmpty) {
           errorLoginByUser.add(username);
         } else {
@@ -61,7 +62,7 @@ class LoginService {
         msg: message, // message
         toastLength: Toast.LENGTH_SHORT, // length
         gravity: ToastGravity.CENTER, // location
-        timeInSecForIosWeb: 4,
+        timeInSecForIosWeb: 6,
         backgroundColor: Colors.red,
         ); // dura
   }
